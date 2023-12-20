@@ -19,6 +19,7 @@ export const usePlayerStore = defineStore("player", () => {
   }
 
   function movePlayerToRight() {
+    console.log(player.x, player.y, isWall({ x: player.x + 1, y: player.y }));
     if (isWall({ x: player.x + 1, y: player.y })) {
       return;
     }
