@@ -16,7 +16,6 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
 const { position } = usePosition(props);
 </script>
 

@@ -2,6 +2,7 @@ import { it, expect, describe, beforeEach } from "vitest";
 import { usePlayerStore } from "../player";
 import { createPinia, setActivePinia } from "pinia";
 import { useMapStore } from "../map";
+import { useCargoStore } from "../cargo";
 
 describe("group", () => {
   beforeEach(() => {
@@ -109,6 +110,81 @@ describe("group", () => {
       movePlayerToDown();
 
       expect(player.y).toBe(3);
+    });
+  });
+
+  describe("cargo", () => {
+    beforeEach(() => {
+      const map = [
+        [1, 1, 1, 1, 1],
+        [1, 2, 2, 2, 1],
+        [1, 2, 2, 2, 1],
+        [1, 2, 2, 2, 1],
+        [1, 1, 1, 1, 1]
+      ];
+
+      const { setupMap } = useMapStore();
+      setupMap(map);
+    });
+
+    it("should move cargo to left", () => {
+      const { createCargo, addCargo } = useCargoStore();
+      const cargo = createCargo({ x: 2, y: 2 });
+      addCargo(cargo);
+
+      const { movePlayerToLeft, player } = usePlayerStore();
+      player.x = 3;
+      player.y = 2;
+
+      movePlayerToLeft();
+
+      expect(player.x).toBe(2);
+      expect(cargo.x).toBe(1);
+    });
+
+    it("should move cargo to right", () => {
+      const { createCargo, addCargo } = useCargoStore();
+      const cargo = createCargo({ x: 2, y: 2 });
+      addCargo(cargo);
+
+      const { movePlayerToRight, player } = usePlayerStore();
+      player.x = 1;
+      player.y = 2;
+
+      movePlayerToRight();
+
+      expect(player.x).toBe(2);
+      expect(cargo.x).toBe(3);
+    });
+
+    it("should move cargo to top", () => {
+      const { createCargo, addCargo } = useCargoStore();
+      const cargo = createCargo({ x: 2, y: 2 });
+      addCargo(cargo);
+
+      const { movePlayerToUp, player } = usePlayerStore();
+      player.x = 2;
+      player.y = 3;
+
+      movePlayerToUp();
+
+      expect(player.y).toBe(2);
+      expect(cargo.y).toBe(1);
+    });
+
+    it("should move cargo to down", () => {
+      const { createCargo, addCargo } = useCargoStore();
+      const cargo = createCargo({ x: 2, y: 2 });
+      addCargo(cargo);
+
+      const { movePlayerToDown, player } = usePlayerStore();
+      player.x = 2;
+      player.y = 1;
+
+      movePlayerToDown();
+
+      expect(player.y).toBe(2);
+      expect(cargo.y).toBe(3);
     });
   });
 });
