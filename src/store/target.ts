@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { Position } from "../composables";
 import { reactive } from "vue";
-import { useMapStore } from "./map";
 
 interface Target {
   x: number;
@@ -22,16 +21,16 @@ export const useTargetStore = defineStore("target", () => {
     targets.push(target);
   }
 
-  // function findTarget(pos: Position) {
-  //   return targets.find((c) => {
-  //     return c.x === pos.x && c.y === pos.y;
-  //   });
-  // }
+  function findTarget(pos: Position) {
+    return targets.find((c) => {
+      return c.x === pos.x && c.y === pos.y;
+    });
+  }
 
   return {
     targets,
     createTarget,
-    addTarget
-    // findTarget
+    addTarget,
+    findTarget
   };
 });
