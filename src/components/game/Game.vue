@@ -17,6 +17,7 @@ import { useCargoStore } from "../../store/cargo";
 const { cargos, createCargo, addCargo } = useCargoStore();
 
 addCargo(createCargo({ x: 2, y: 2 }));
+addCargo(createCargo({ x: 4, y: 2 }));
 </script>
 
 <style scoped></style>

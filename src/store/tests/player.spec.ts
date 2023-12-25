@@ -4,7 +4,7 @@ import { createPinia, setActivePinia } from "pinia";
 import { useMapStore } from "../map";
 import { useCargoStore } from "../cargo";
 
-describe("group", () => {
+describe("player", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });
@@ -59,7 +59,7 @@ describe("group", () => {
     });
   });
 
-  describe("meet wall", () => {
+  describe("player meet wall", () => {
     beforeEach(() => {
       const map = [
         [1, 1, 1, 1, 1],
@@ -113,7 +113,7 @@ describe("group", () => {
     });
   });
 
-  describe("cargo", () => {
+  describe("player meet cargo", () => {
     beforeEach(() => {
       const map = [
         [1, 1, 1, 1, 1],
@@ -185,6 +185,41 @@ describe("group", () => {
 
       expect(player.y).toBe(2);
       expect(cargo.y).toBe(3);
+    });
+
+    describe("cargo hit", () => {
+      it("should not push a cargo when the cargo hits the wall", () => {
+        const { createCargo, addCargo } = useCargoStore();
+        const cargo = createCargo({ x: 1, y: 1 });
+        addCargo(cargo);
+
+        const { movePlayerToLeft, player } = usePlayerStore();
+        player.x = 2;
+        player.y = 1;
+
+        movePlayerToLeft();
+
+        expect(player.x).toBe(2);
+        expect(cargo.x).toBe(1);
+      });
+
+      it("should not push a cargo when the cargo hits other cargo", () => {
+        const { createCargo, addCargo } = useCargoStore();
+        const firstCargo = createCargo({ x: 2, y: 2 });
+        const secondCargo = createCargo({ x: 3, y: 2 });
+        addCargo(firstCargo);
+        addCargo(createCargo(secondCargo));
+
+        const { movePlayerToRight, player } = usePlayerStore();
+        player.x = 1;
+        player.y = 2;
+
+        movePlayerToRight();
+
+        expect(player.x).toBe(1);
+        expect(firstCargo.x).toBe(2);
+        expect(secondCargo.x).toBe(3);
+      });
     });
   });
 });
